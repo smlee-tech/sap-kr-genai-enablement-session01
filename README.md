@@ -11,9 +11,9 @@ enablement-session-01
 
 ## BTP Kyma Runtime 
 - config name: kubeconfig--garden-kyma--c-5d3089e-external.yaml
-- config file path: /Users/i551982/.kube/kubeconfig--garden-kyma--c-5d3089e-external.yaml
+- config file path: ./kube/kubeconfig--garden-kyma--c-5d3089e-external.yaml
 - Steps
-1. export KUBECONFIG=/Users/i551982/.kube/kubeconfig.yaml    #Kube configuration 
+1. export KUBECONFIG=./kube/kubeconfig.yaml    #Kube configuration 
 2. kubectl config get-contexts 
 3. kubectl version
 4. docker-credential-osxkeychain list
