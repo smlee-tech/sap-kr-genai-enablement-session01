@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-demo-enablement1-app-sumin
+  namespace: demo-trainer01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-demo-enablement1-app-sumin
+  template:
+    metadata:
+      labels:
+        app: rag-demo-enablement1-app-sumin
+        version: v1
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+      - name: rag-demo-enablement1-app-sumin
+        image: lsm1401/rag-demo:0.0.2
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 1
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 745Mi
+        ports:
+          - containerPort: 7860
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-demo-enablement1-service-sumin
+  namespace: demo-trainer01
+spec:
+  selector:
+    app: rag-demo-enablement1-app-sumin
+  type: NodePort #LoadBalancer #ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 7860
+      targetPort: 7860
+
+---
+apiVersion: gateway.kyma-project.io/v1beta1
+kind: APIRule
+metadata:
+  name: rag-demo-enablement1-api-rule
+  namespace: demo-trainer01
+spec:
+  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  host: rag-demo-enablement1-api-rule.c-5d3089e.kyma.ondemand.com
+  service:
+    name: rag-demo-enablement1-service-sumin
+    port: 7860
+  rules:
+    - path: /.*
+      methods: ["GET", "POST"]
+      mutators: []
+      accessStrategies:
+        - handler: allow
+          config: {}
