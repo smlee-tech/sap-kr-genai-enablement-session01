@@ -19,3 +19,5 @@ enablement-session-01
 4. docker-credential-osxkeychain list
 5. kubectl create -f k8s/deployment.yaml
 6. kubectl apply -f k8s/simulator-deploy.yaml
+
+Update test
